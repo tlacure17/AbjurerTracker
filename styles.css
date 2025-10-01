@@ -247,12 +247,19 @@ header p {
     box-shadow: 0 0 5px rgba(76, 99, 210, 0.3);
 }
 
+/* Actions Container - Side by side layout for larger screens */
+.actions-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
 /* Spell Recharge Section */
 .spell-recharge-section {
     background: white;
     border-radius: 15px;
     padding: 1.5rem;
-    margin-bottom: 2rem;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
@@ -368,7 +375,6 @@ header p {
     background: white;
     border-radius: 15px;
     padding: 1.5rem;
-    margin-bottom: 2rem;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
@@ -559,8 +565,40 @@ footer {
     margin-top: 2rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Larger screens - iPad landscape and desktop */
+@media (min-width: 1024px) {
+    .actions-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Medium screens - iPad portrait and small tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .actions-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .spell-recharge-section,
+    .damage-section {
+        padding: 1.25rem;
+    }
+    
+    .spell-buttons {
+        gap: 0.75rem;
+    }
+    
+    .btn-spell-arcane,
+    .btn-spell-reservoir,
+    .btn-spell-both {
+        min-width: 140px;
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 767px) {
     .container {
         padding: 10px;
     }
@@ -601,8 +639,20 @@ footer {
         min-width: 80px;
     }
     
+    /* Actions container mobile layout */
+    .actions-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .spell-recharge-section,
+    .damage-section {
+        padding: 1rem;
+    }
+    
     .damage-controls {
         flex-direction: column;
+        gap: 1rem;
     }
     
     .damage-controls input {

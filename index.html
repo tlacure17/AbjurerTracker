@@ -87,44 +87,46 @@
                 </div>
             </div>
 
-            <div class="spell-recharge-section">
-                <h2>✨ Spell Recharging</h2>
-                <p>Recharge your defenses when casting spells</p>
-                
-                <div class="spell-controls">
-                    <div class="spell-input-group">
-                        <label for="spell-level">Spell Level:</label>
-                        <input type="number" id="spell-level" min="1" max="9" value="1" inputmode="numeric">
-                    </div>
+            <div class="actions-container">
+                <div class="spell-recharge-section">
+                    <h2>✨ Spell Recharging</h2>
+                    <p>Recharge your defenses when casting spells</p>
                     
-                    <div class="spell-input-group">
-                        <label for="int-modifier">INT Modifier:</label>
-                        <input type="number" id="int-modifier" min="0" max="10" value="4" inputmode="numeric">
-                    </div>
-                    
-                    <div class="spell-buttons">
-                        <button class="btn btn-spell-arcane" onclick="rechargeFromSpell('arcane')">
-                            ⚡ Recharge Arcane Ward<br>
-                            <small>(Spell Level × 2)</small>
-                        </button>
-                        <button class="btn btn-spell-reservoir" onclick="rechargeFromSpell('reservoir')">
-                            🔮 Recharge Reservoir<br>
-                            <small>(Spell Level + INT Mod)</small>
-                        </button>
-                        <button class="btn btn-spell-both" onclick="rechargeFromSpell('both')">
-                            ✨ Recharge Both<br>
-                            <small>(Cast Abjuration Spell)</small>
-                        </button>
+                    <div class="spell-controls">
+                        <div class="spell-input-group">
+                            <label for="spell-level">Spell Level:</label>
+                            <input type="number" id="spell-level" min="1" max="9" value="1" inputmode="numeric">
+                        </div>
+                        
+                        <div class="spell-input-group">
+                            <label for="int-modifier">INT Modifier:</label>
+                            <input type="number" id="int-modifier" min="0" max="10" value="4" inputmode="numeric">
+                        </div>
+                        
+                        <div class="spell-buttons">
+                            <button class="btn btn-spell-arcane" onclick="rechargeFromSpell('arcane')">
+                                ⚡ Recharge Arcane Ward<br>
+                                <small>(Spell Level × 2)</small>
+                            </button>
+                            <button class="btn btn-spell-reservoir" onclick="rechargeFromSpell('reservoir')">
+                                🔮 Recharge Reservoir<br>
+                                <small>(Spell Level + INT Mod)</small>
+                            </button>
+                            <button class="btn btn-spell-both" onclick="rechargeFromSpell('both')">
+                                ✨ Recharge Both<br>
+                                <small>(Cast Abjuration Spell)</small>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="damage-section">
-                <h2>💥 Take Damage</h2>
-                <p>Damage will be applied in order: Arcane Ward → Shielding Reservoir → Main HP</p>
-                <div class="damage-controls">
-                    <input type="number" id="damage-amount" min="1" value="1" placeholder="Damage amount">
-                    <button class="btn btn-damage" onclick="takeDamage()">Apply Damage</button>
+                <div class="damage-section">
+                    <h2>💥 Take Damage</h2>
+                    <p>Damage will be applied in order: Arcane Ward → Shielding Reservoir → Main HP</p>
+                    <div class="damage-controls">
+                        <input type="number" id="damage-amount" min="1" value="1" placeholder="Damage amount">
+                        <button class="btn btn-damage" onclick="takeDamage()">Apply Damage</button>
+                    </div>
                 </div>
             </div>
 
