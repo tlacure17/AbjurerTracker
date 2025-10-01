@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Abjurer Tracker - D&D HP Management</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Specific -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Abjurer Tracker">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%234c63d2'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3E🛡️%3C/text%3E%3C/svg%3E">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ Abjurer Tracker</h1>
+            <p>D&D HP Management System</p>
+        </header>
+
+        <main>
+            <div class="hp-categories">
+                <!-- Arcane Ward -->
+                <div class="hp-category arcane-ward">
+                    <h2>⚡ Arcane Ward</h2>
+                    <div class="hp-display">
+                        <span class="current-hp" id="arcane-current">0</span>
+                        <span class="separator">/</span>
+                        <span class="max-hp" id="arcane-max">18</span>
+                    </div>
+                    <div class="hp-bar">
+                        <div class="hp-fill" id="arcane-fill"></div>
+                    </div>
+                    <div class="controls">
+                        <input type="number" class="hp-input" id="arcane-input" value="1" min="1" inputmode="numeric">
+                        <button class="btn btn-add" onclick="modifyHPByInput('arcane', true)">Add</button>
+                        <button class="btn btn-subtract" onclick="modifyHPByInput('arcane', false)">Subtract</button>
+                        <button class="btn btn-reset" onclick="resetCategory('arcane')">Reset</button>
+                    </div>
+                    <div class="max-controls">
+                        <label for="arcane-max-input">Max HP:</label>
+                        <input type="number" id="arcane-max-input" min="0" value="18" onchange="updateMaxHP('arcane', this.value)">
+                    </div>
+                </div>
+
+                <!-- Shielding Reservoir -->
+                <div class="hp-category shielding-reservoir">
+                    <h2>🔮 Shielding Reservoir</h2>
+                    <div class="hp-display">
+                        <span class="current-hp" id="reservoir-current">0</span>
+                        <span class="separator">/ ∞</span>
+                    </div>
+                    <div class="controls">
+                        <input type="number" class="hp-input" id="reservoir-input" value="1" min="1" inputmode="numeric">
+                        <button class="btn btn-add" onclick="modifyHPByInput('reservoir', true)">Add</button>
+                        <button class="btn btn-subtract" onclick="modifyHPByInput('reservoir', false)">Subtract</button>
+                        <button class="btn btn-reset" onclick="resetCategory('reservoir')">Reset</button>
+                    </div>
+                </div>
+
+                <!-- Main HP -->
+                <div class="hp-category main-hp">
+                    <h2>❤️ Main HP</h2>
+                    <div class="hp-display">
+                        <span class="current-hp" id="main-current">0</span>
+                        <span class="separator">/</span>
+                        <span class="max-hp" id="main-max">57</span>
+                    </div>
+                    <div class="hp-bar">
+                        <div class="hp-fill" id="main-fill"></div>
+                    </div>
+                    <div class="controls">
+                        <input type="number" class="hp-input" id="main-input" value="1" min="1" inputmode="numeric">
+                        <button class="btn btn-add" onclick="modifyHPByInput('main', true)">Add</button>
+                        <button class="btn btn-subtract" onclick="modifyHPByInput('main', false)">Subtract</button>
+                        <button class="btn btn-reset" onclick="resetCategory('main')">Reset</button>
+                    </div>
+                    <div class="max-controls">
+                        <label for="main-max-input">Max HP:</label>
+                        <input type="number" id="main-max-input" min="0" value="57" onchange="updateMaxHP('main', this.value)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="damage-section">
+                <h2>💥 Take Damage</h2>
+                <p>Damage will be applied in order: Arcane Ward → Shielding Reservoir → Main HP</p>
+                <div class="damage-controls">
+                    <input type="number" id="damage-amount" min="1" value="1" placeholder="Damage amount">
+                    <button class="btn btn-damage" onclick="takeDamage()">Apply Damage</button>
+                </div>
+            </div>
+
+            <div class="reset-all">
+                <button class="btn btn-reset-all" onclick="resetAll()">Reset All</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Made for D&D Abjuration Wizards 🧙‍♂️</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
