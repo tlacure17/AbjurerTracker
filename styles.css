@@ -105,7 +105,7 @@ header p {
     background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .hp-fill {
@@ -125,6 +125,31 @@ header p {
 
 .main-hp .hp-fill {
     background: linear-gradient(90deg, #f44336, #ef5350);
+}
+
+/* Damage Absorbed Counter */
+.damage-absorbed {
+    text-align: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.damage-absorbed-amount {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e65100;
+    display: block;
+    font-family: 'Courier New', monospace;
+}
+
+.damage-absorbed-label {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Controls */
@@ -195,6 +220,17 @@ header p {
 
 .btn-reset:hover {
     background: #e68900;
+}
+
+.btn-reset-absorbed {
+    background: #607d8b;
+    color: white;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+}
+
+.btn-reset-absorbed:hover {
+    background: #546e7a;
 }
 
 .btn-damage {

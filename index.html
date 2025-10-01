@@ -36,11 +36,16 @@
                     <div class="hp-bar">
                         <div class="hp-fill" id="arcane-fill"></div>
                     </div>
+                    <div class="damage-absorbed">
+                        <span class="damage-absorbed-amount" id="arcane-absorbed">0</span>
+                        <span class="damage-absorbed-label">Damage Absorbed</span>
+                    </div>
                     <div class="controls">
                         <input type="number" class="hp-input" id="arcane-input" value="1" min="1" inputmode="numeric">
                         <button class="btn btn-add" onclick="modifyHPByInput('arcane', true)">Add</button>
                         <button class="btn btn-subtract" onclick="modifyHPByInput('arcane', false)">Subtract</button>
                         <button class="btn btn-reset" onclick="resetCategory('arcane')">Reset</button>
+                        <button class="btn btn-reset-absorbed" onclick="resetDamageAbsorbed('arcane')">Reset Counter</button>
                     </div>
                     <div class="max-controls">
                         <label for="arcane-max-input">Max HP:</label>
@@ -55,11 +60,16 @@
                         <span class="current-hp" id="reservoir-current">0</span>
                         <span class="separator">/ ∞</span>
                     </div>
+                    <div class="damage-absorbed">
+                        <span class="damage-absorbed-amount" id="reservoir-absorbed">0</span>
+                        <span class="damage-absorbed-label">Damage Absorbed</span>
+                    </div>
                     <div class="controls">
                         <input type="number" class="hp-input" id="reservoir-input" value="1" min="1" inputmode="numeric">
                         <button class="btn btn-add" onclick="modifyHPByInput('reservoir', true)">Add</button>
                         <button class="btn btn-subtract" onclick="modifyHPByInput('reservoir', false)">Subtract</button>
                         <button class="btn btn-reset" onclick="resetCategory('reservoir')">Reset</button>
+                        <button class="btn btn-reset-absorbed" onclick="resetDamageAbsorbed('reservoir')">Reset Counter</button>
                     </div>
                 </div>
 
@@ -149,6 +159,7 @@
             <div class="reset-all">
                 <button class="btn btn-reset-all" onclick="resetAll()">Reset All HP</button>
                 <button class="btn btn-reset-all" onclick="resetPartyTracking()">Reset Party Tracking</button>
+                <button class="btn btn-reset-all" onclick="resetAllDamageAbsorbed()">Reset Damage Counters</button>
             </div>
         </main>
 

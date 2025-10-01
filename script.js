@@ -2,11 +2,13 @@
 let hpState = {
     arcane: {
         current: 0,
-        max: 18
+        max: 18,
+        damageAbsorbed: 0
     },
     reservoir: {
         current: 0,
-        max: null // No maximum for reservoir
+        max: null, // No maximum for reservoir
+        damageAbsorbed: 0
     },
     main: {
         current: 0,
@@ -49,6 +51,14 @@ function loadState() {
         }
     }
     
+    // Initialize damage absorbed counters if they don't exist (backward compatibility)
+    if (hpState.arcane.damageAbsorbed === undefined) {
+        hpState.arcane.damageAbsorbed = 0;
+    }
+    if (hpState.reservoir.damageAbsorbed === undefined) {
+        hpState.reservoir.damageAbsorbed = 0;
+    }
+    
     // Always update the max HP inputs to match current state
     document.getElementById('arcane-max-input').value = hpState.arcane.max;
     document.getElementById('main-max-input').value = hpState.main.max;
@@ -81,6 +91,14 @@ function updateDisplay(category) {
         const fillElement = document.getElementById(`${category}-fill`);
         if (fillElement) {
             fillElement.style.width = `${percentage}%`;
+        }
+    }
+    
+    // Update damage absorbed counter (for arcane and reservoir only)
+    if (category === 'arcane' || category === 'reservoir') {
+        const absorbedElement = document.getElementById(`${category}-absorbed`);
+        if (absorbedElement && hpState[category].damageAbsorbed !== undefined) {
+            absorbedElement.textContent = hpState[category].damageAbsorbed;
         }
     }
     
@@ -161,6 +179,25 @@ function resetAll() {
     }
 }
 
+// Reset damage absorbed counter for a specific category
+function resetDamageAbsorbed(category) {
+    if (confirm(`Reset damage absorbed counter for ${getCategoryDisplayName(category)}?`)) {
+        if (hpState[category].damageAbsorbed !== undefined) {
+            hpState[category].damageAbsorbed = 0;
+            updateDisplay(category);
+        }
+    }
+}
+
+// Reset all damage absorbed counters
+function resetAllDamageAbsorbed() {
+    if (confirm('Reset all damage absorbed counters?')) {
+        hpState.arcane.damageAbsorbed = 0;
+        hpState.reservoir.damageAbsorbed = 0;
+        updateAllDisplays();
+    }
+}
+
 // Take damage (applies in order: Arcane Ward -> Shielding Reservoir -> Main HP)
 function takeDamage() {
     const damageInput = document.getElementById('damage-amount');
@@ -178,6 +215,7 @@ function takeDamage() {
     if (damage > 0 && hpState.arcane.current > 0) {
         const arcaneAbsorbed = Math.min(damage, hpState.arcane.current);
         hpState.arcane.current -= arcaneAbsorbed;
+        hpState.arcane.damageAbsorbed += arcaneAbsorbed; // Increment damage absorbed counter
         damage -= arcaneAbsorbed;
         damageLog.push(`Arcane Ward absorbed ${arcaneAbsorbed} damage`);
     }
@@ -186,6 +224,7 @@ function takeDamage() {
     if (damage > 0 && hpState.reservoir.current > 0) {
         const reservoirAbsorbed = Math.min(damage, hpState.reservoir.current);
         hpState.reservoir.current -= reservoirAbsorbed;
+        hpState.reservoir.damageAbsorbed += reservoirAbsorbed; // Increment damage absorbed counter
         damage -= reservoirAbsorbed;
         damageLog.push(`Shielding Reservoir absorbed ${reservoirAbsorbed} damage`);
     }
