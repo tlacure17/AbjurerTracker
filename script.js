@@ -14,15 +14,23 @@ let hpState = {
     }
 };
 
+// Party Members Tracking State
+let partyMembers = {};
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
     loadState();
     updateAllDisplays();
+    renderPartyMembers();
 });
 
 // Save state to localStorage
 function saveState() {
-    localStorage.setItem('abjurerTracker', JSON.stringify(hpState));
+    const state = {
+        hpState: hpState,
+        partyMembers: partyMembers
+    };
+    localStorage.setItem('abjurerTracker', JSON.stringify(state));
 }
 
 // Load state from localStorage
@@ -30,7 +38,15 @@ function loadState() {
     const saved = localStorage.getItem('abjurerTracker');
     if (saved) {
         const parsed = JSON.parse(saved);
-        hpState = { ...hpState, ...parsed };
+        
+        // Handle both old format (just hpState) and new format (with partyMembers)
+        if (parsed.hpState) {
+            hpState = { ...hpState, ...parsed.hpState };
+            partyMembers = parsed.partyMembers || {};
+        } else {
+            // Legacy format - just hpState
+            hpState = { ...hpState, ...parsed };
+        }
     }
     
     // Always update the max HP inputs to match current state
@@ -294,3 +310,171 @@ document.getElementById('main-input').addEventListener('keypress', function(even
         modifyHPByInput('main', true);
     }
 });
+
+// Add Enter key support for new member input
+document.getElementById('new-member-name').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        addPartyMember();
+    }
+});
+
+// ==========================================
+// PARTY MEMBER TRACKING FUNCTIONS
+// ==========================================
+
+// Add a new party member
+function addPartyMember() {
+    const nameInput = document.getElementById('new-member-name');
+    const name = nameInput.value.trim();
+    
+    if (!name) {
+        alert('Please enter a party member name.');
+        return;
+    }
+    
+    if (partyMembers[name]) {
+        alert('Party member with that name already exists.');
+        return;
+    }
+    
+    // Add new member with 0 damage prevented
+    partyMembers[name] = {
+        damagePrevented: 0
+    };
+    
+    // Clear input and re-render
+    nameInput.value = '';
+    renderPartyMembers();
+    saveState();
+}
+
+// Remove a party member
+function removePartyMember(memberName) {
+    if (confirm(`Remove ${memberName} from party tracking?`)) {
+        delete partyMembers[memberName];
+        renderPartyMembers();
+        saveState();
+    }
+}
+
+// Add damage prevented for a member
+function addDamagePrevented(memberName, amount) {
+    if (partyMembers[memberName]) {
+        partyMembers[memberName].damagePrevented += amount;
+        renderPartyMembers();
+        saveState();
+        
+        // Visual feedback
+        const memberElement = document.querySelector(`[data-member="${memberName}"]`);
+        if (memberElement) {
+            memberElement.classList.add('heal-animation');
+            setTimeout(() => memberElement.classList.remove('heal-animation'), 500);
+        }
+    }
+}
+
+// Subtract damage prevented for a member (in case of mistakes)
+function subtractDamagePrevented(memberName, amount) {
+    if (partyMembers[memberName]) {
+        partyMembers[memberName].damagePrevented = Math.max(0, partyMembers[memberName].damagePrevented - amount);
+        renderPartyMembers();
+        saveState();
+        
+        // Visual feedback
+        const memberElement = document.querySelector(`[data-member="${memberName}"]`);
+        if (memberElement) {
+            memberElement.classList.add('damage-animation');
+            setTimeout(() => memberElement.classList.remove('damage-animation'), 500);
+        }
+    }
+}
+
+// Add/subtract damage prevented using input
+function modifyDamagePreventedByInput(memberName, isAdd) {
+    const inputElement = document.getElementById(`${memberName}-input`);
+    const amount = parseInt(inputElement.value) || 1;
+    
+    if (isAdd) {
+        addDamagePrevented(memberName, amount);
+    } else {
+        subtractDamagePrevented(memberName, amount);
+    }
+}
+
+// Reset party member's damage prevented
+function resetMemberDamage(memberName) {
+    if (confirm(`Reset damage prevented for ${memberName}?`)) {
+        if (partyMembers[memberName]) {
+            partyMembers[memberName].damagePrevented = 0;
+            renderPartyMembers();
+            saveState();
+        }
+    }
+}
+
+// Reset all party tracking
+function resetPartyTracking() {
+    if (confirm('Reset all party damage tracking? This will set all damage prevented to 0.')) {
+        Object.keys(partyMembers).forEach(memberName => {
+            partyMembers[memberName].damagePrevented = 0;
+        });
+        renderPartyMembers();
+        saveState();
+    }
+}
+
+// Render all party members
+function renderPartyMembers() {
+    const container = document.getElementById('party-members');
+    container.innerHTML = '';
+    
+    const memberNames = Object.keys(partyMembers).sort();
+    
+    if (memberNames.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #666; font-style: italic; grid-column: 1 / -1;">No party members added yet. Add some above!</p>';
+        return;
+    }
+    
+    memberNames.forEach(memberName => {
+        const member = partyMembers[memberName];
+        const memberElement = document.createElement('div');
+        memberElement.className = 'party-member';
+        memberElement.setAttribute('data-member', memberName);
+        
+        memberElement.innerHTML = `
+            <div class="party-member-header">
+                <span class="party-member-name">${escapeHtml(memberName)}</span>
+                <button class="remove-member" onclick="removePartyMember('${escapeHtml(memberName)}')" title="Remove ${escapeHtml(memberName)}">×</button>
+            </div>
+            <div class="damage-prevented">
+                <span class="damage-prevented-amount">${member.damagePrevented}</span>
+                <span class="damage-prevented-label">Damage Prevented</span>
+            </div>
+            <div class="member-controls">
+                <input type="number" class="hp-input" id="${memberName}-input" value="1" min="1" inputmode="numeric">
+                <button class="btn btn-add" onclick="modifyDamagePreventedByInput('${escapeHtml(memberName)}', true)">Add</button>
+                <button class="btn btn-subtract" onclick="modifyDamagePreventedByInput('${escapeHtml(memberName)}', false)">Remove</button>
+                <button class="btn btn-reset" onclick="resetMemberDamage('${escapeHtml(memberName)}')">Reset</button>
+            </div>
+        `;
+        
+        container.appendChild(memberElement);
+        
+        // Add Enter key support for this member's input
+        const memberInput = document.getElementById(`${memberName}-input`);
+        if (memberInput) {
+            memberInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    modifyDamagePreventedByInput(memberName, true);
+                }
+            });
+        }
+    });
+}
+
+// Utility function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
