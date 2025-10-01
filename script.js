@@ -347,11 +347,12 @@ function rechargeFromSpell(type) {
     }
     
     if (type === 'reservoir' || type === 'both') {
-        // Shielding Reservoir: Spell Level + INT Modifier
+        // Shielding Reservoir: Spell Level + INT Modifier (replaces current HP)
         const reservoirRecharge = spellLevel + intModifier;
-        hpState.reservoir.current += reservoirRecharge;
+        const oldReservoir = hpState.reservoir.current;
+        hpState.reservoir.current = reservoirRecharge; // Replace instead of add
         
-        recharged.push(`Shielding Reservoir: +${reservoirRecharge} HP`);
+        recharged.push(`Shielding Reservoir: ${reservoirRecharge} HP (was ${oldReservoir})`);
         
         // Visual feedback
         const reservoirElement = document.querySelector('.shielding-reservoir');
@@ -393,8 +394,8 @@ function updateSpellButtonText() {
     const bothBtn = document.querySelector('.btn-spell-both small');
     
     if (arcaneBtn) arcaneBtn.textContent = `(+${preview.arcane} HP)`;
-    if (reservoirBtn) reservoirBtn.textContent = `(+${preview.reservoir} HP)`;
-    if (bothBtn) bothBtn.textContent = `(+${preview.arcane} / +${preview.reservoir} HP)`;
+    if (reservoirBtn) reservoirBtn.textContent = `(Set to ${preview.reservoir} HP)`;
+    if (bothBtn) bothBtn.textContent = `(+${preview.arcane} / Set ${preview.reservoir} HP)`;
 }
 
 // Add event listeners for spell inputs to update button text
