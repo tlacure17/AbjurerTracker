@@ -282,6 +282,14 @@ header p {
     align-items: center;
 }
 
+.spell-inputs-row {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .spell-input-group {
     display: flex;
     flex-direction: column;
@@ -595,6 +603,10 @@ footer {
         padding: 0.875rem 1.25rem;
         font-size: 0.9rem;
     }
+    
+    .spell-inputs-row {
+        gap: 1.5rem;
+    }
 }
 
 /* Responsive Design - Mobile */
@@ -693,6 +705,11 @@ footer {
     
     .spell-controls {
         gap: 1rem;
+    }
+    
+    .spell-inputs-row {
+        gap: 1rem;
+        flex-direction: column;
     }
     
     .spell-buttons {
