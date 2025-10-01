@@ -324,28 +324,46 @@ document.getElementById('new-member-name').addEventListener('keypress', function
 
 // Add a new party member
 function addPartyMember() {
-    const nameInput = document.getElementById('new-member-name');
-    const name = nameInput.value.trim();
-    
-    if (!name) {
-        alert('Please enter a party member name.');
-        return;
+    try {
+        console.log('addPartyMember called');
+        const nameInput = document.getElementById('new-member-name');
+        
+        if (!nameInput) {
+            console.error('Could not find new-member-name input element');
+            alert('Error: Could not find input field. Please refresh the page.');
+            return;
+        }
+        
+        const name = nameInput.value.trim();
+        console.log('Member name:', name);
+        
+        if (!name) {
+            alert('Please enter a party member name.');
+            return;
+        }
+        
+        if (partyMembers[name]) {
+            alert('Party member with that name already exists.');
+            return;
+        }
+        
+        // Add new member with 0 damage prevented
+        partyMembers[name] = {
+            damagePrevented: 0
+        };
+        
+        console.log('Added member:', name, 'Party members:', partyMembers);
+        
+        // Clear input and re-render
+        nameInput.value = '';
+        renderPartyMembers();
+        saveState();
+        
+        console.log('Member added successfully');
+    } catch (error) {
+        console.error('Error in addPartyMember:', error);
+        alert('Error adding party member: ' + error.message);
     }
-    
-    if (partyMembers[name]) {
-        alert('Party member with that name already exists.');
-        return;
-    }
-    
-    // Add new member with 0 damage prevented
-    partyMembers[name] = {
-        damagePrevented: 0
-    };
-    
-    // Clear input and re-render
-    nameInput.value = '';
-    renderPartyMembers();
-    saveState();
 }
 
 // Remove a party member
@@ -425,15 +443,24 @@ function resetPartyTracking() {
 
 // Render all party members
 function renderPartyMembers() {
-    const container = document.getElementById('party-members');
-    container.innerHTML = '';
-    
-    const memberNames = Object.keys(partyMembers).sort();
-    
-    if (memberNames.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: #666; font-style: italic; grid-column: 1 / -1;">No party members added yet. Add some above!</p>';
-        return;
-    }
+    try {
+        console.log('renderPartyMembers called');
+        const container = document.getElementById('party-members');
+        
+        if (!container) {
+            console.error('Could not find party-members container');
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        const memberNames = Object.keys(partyMembers).sort();
+        console.log('Rendering members:', memberNames);
+        
+        if (memberNames.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #666; font-style: italic; grid-column: 1 / -1;">No party members added yet. Add some above!</p>';
+            return;
+        }
     
     memberNames.forEach(memberName => {
         const member = partyMembers[memberName];
@@ -460,16 +487,19 @@ function renderPartyMembers() {
         
         container.appendChild(memberElement);
         
-        // Add Enter key support for this member's input
-        const memberInput = document.getElementById(`${memberName}-input`);
-        if (memberInput) {
-            memberInput.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    modifyDamagePreventedByInput(memberName, true);
-                }
-            });
-        }
-    });
+            // Add Enter key support for this member's input
+            const memberInput = document.getElementById(`${memberName}-input`);
+            if (memberInput) {
+                memberInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        modifyDamagePreventedByInput(memberName, true);
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Error in renderPartyMembers:', error);
+    }
 }
 
 // Utility function to escape HTML
