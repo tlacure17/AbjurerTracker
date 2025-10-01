@@ -247,6 +247,122 @@ header p {
     box-shadow: 0 0 5px rgba(76, 99, 210, 0.3);
 }
 
+/* Spell Recharge Section */
+.spell-recharge-section {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.spell-recharge-section h2 {
+    color: #9c27b0;
+    margin-bottom: 1rem;
+}
+
+.spell-recharge-section p {
+    color: #666;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.spell-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.spell-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.spell-input-group label {
+    font-weight: bold;
+    color: #666;
+}
+
+.spell-input-group input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.spell-input-group input:focus {
+    outline: none;
+    border-color: #9c27b0;
+    box-shadow: 0 0 5px rgba(156, 39, 176, 0.3);
+}
+
+.spell-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-spell-arcane {
+    background: linear-gradient(135deg, #3f51b5, #5c6bc0);
+    color: white;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.2s ease;
+    min-width: 160px;
+}
+
+.btn-spell-reservoir {
+    background: linear-gradient(135deg, #9c27b0, #ba68c8);
+    color: white;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.2s ease;
+    min-width: 160px;
+}
+
+.btn-spell-both {
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    color: white;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.2s ease;
+    min-width: 160px;
+}
+
+.btn-spell-arcane:hover,
+.btn-spell-reservoir:hover,
+.btn-spell-both:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.spell-buttons small {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    margin-top: 0.25rem;
+}
+
 /* Damage Section */
 .damage-section {
     background: white;
@@ -523,6 +639,22 @@ footer {
     .reset-all {
         flex-direction: column;
         gap: 0.5rem;
+    }
+    
+    .spell-controls {
+        gap: 1rem;
+    }
+    
+    .spell-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn-spell-arcane,
+    .btn-spell-reservoir,
+    .btn-spell-both {
+        min-width: 200px;
+        padding: 1.25rem 1rem;
     }
 }
 

@@ -279,6 +279,99 @@ document.getElementById('damage-amount').addEventListener('keypress', function(e
     }
 });
 
+// ==========================================
+// SPELL RECHARGING FUNCTIONS
+// ==========================================
+
+// Recharge defenses from spell casting
+function rechargeFromSpell(type) {
+    const spellLevel = parseInt(document.getElementById('spell-level').value) || 1;
+    const intModifier = parseInt(document.getElementById('int-modifier').value) || 4;
+    
+    let recharged = [];
+    
+    if (type === 'arcane' || type === 'both') {
+        // Arcane Ward: Spell Level × 2
+        const arcaneRecharge = spellLevel * 2;
+        const oldArcane = hpState.arcane.current;
+        hpState.arcane.current = Math.min(hpState.arcane.max, hpState.arcane.current + arcaneRecharge);
+        const actualArcaneGain = hpState.arcane.current - oldArcane;
+        
+        if (actualArcaneGain > 0) {
+            recharged.push(`Arcane Ward: +${actualArcaneGain} HP`);
+            
+            // Visual feedback
+            const arcaneElement = document.querySelector('.arcane-ward');
+            arcaneElement.classList.add('heal-animation');
+            setTimeout(() => arcaneElement.classList.remove('heal-animation'), 500);
+        }
+    }
+    
+    if (type === 'reservoir' || type === 'both') {
+        // Shielding Reservoir: Spell Level + INT Modifier
+        const reservoirRecharge = spellLevel + intModifier;
+        hpState.reservoir.current += reservoirRecharge;
+        
+        recharged.push(`Shielding Reservoir: +${reservoirRecharge} HP`);
+        
+        // Visual feedback
+        const reservoirElement = document.querySelector('.shielding-reservoir');
+        reservoirElement.classList.add('heal-animation');
+        setTimeout(() => reservoirElement.classList.remove('heal-animation'), 500);
+    }
+    
+    // Update displays
+    updateAllDisplays();
+    
+    // Show recharge summary
+    const spellTypeText = type === 'both' ? 'Abjuration' : (type === 'arcane' ? 'Any' : 'Any');
+    let message = `Cast Level ${spellLevel} ${spellTypeText} Spell:\n\n${recharged.join('\n')}`;
+    
+    if (type === 'both') {
+        message += `\n\n✨ Abjuration spells recharge both defenses!`;
+    }
+    
+    alert(message);
+}
+
+// Get current spell recharge preview
+function getRechargePreview() {
+    const spellLevel = parseInt(document.getElementById('spell-level').value) || 1;
+    const intModifier = parseInt(document.getElementById('int-modifier').value) || 4;
+    
+    return {
+        arcane: spellLevel * 2,
+        reservoir: spellLevel + intModifier
+    };
+}
+
+// Update spell button text with current values (optional enhancement)
+function updateSpellButtonText() {
+    const preview = getRechargePreview();
+    
+    const arcaneBtn = document.querySelector('.btn-spell-arcane small');
+    const reservoirBtn = document.querySelector('.btn-spell-reservoir small');
+    const bothBtn = document.querySelector('.btn-spell-both small');
+    
+    if (arcaneBtn) arcaneBtn.textContent = `(+${preview.arcane} HP)`;
+    if (reservoirBtn) reservoirBtn.textContent = `(+${preview.reservoir} HP)`;
+    if (bothBtn) bothBtn.textContent = `(+${preview.arcane} / +${preview.reservoir} HP)`;
+}
+
+// Add event listeners for spell inputs to update button text
+document.addEventListener('DOMContentLoaded', function() {
+    const spellLevelInput = document.getElementById('spell-level');
+    const intModInput = document.getElementById('int-modifier');
+    
+    if (spellLevelInput && intModInput) {
+        spellLevelInput.addEventListener('input', updateSpellButtonText);
+        intModInput.addEventListener('input', updateSpellButtonText);
+        
+        // Initial update
+        setTimeout(updateSpellButtonText, 100);
+    }
+});
+
 // Add Enter key support for max HP inputs
 document.getElementById('arcane-max-input').addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
