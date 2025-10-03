@@ -19,18 +19,28 @@ let hpState = {
 // Party Members Tracking State
 let partyMembers = {};
 
+// Special Abilities State
+let specialAbilities = {
+    fortuneFromTheMany: {
+        maxUses: 3,
+        usedCount: 0
+    }
+};
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
     loadState();
     updateAllDisplays();
     renderPartyMembers();
+    updateFortuneDisplay();
 });
 
 // Save state to localStorage
 function saveState() {
     const state = {
         hpState: hpState,
-        partyMembers: partyMembers
+        partyMembers: partyMembers,
+        specialAbilities: specialAbilities
     };
     localStorage.setItem('abjurerTracker', JSON.stringify(state));
 }
@@ -41,10 +51,11 @@ function loadState() {
     if (saved) {
         const parsed = JSON.parse(saved);
         
-        // Handle both old format (just hpState) and new format (with partyMembers)
+        // Handle both old format (just hpState) and new format (with partyMembers and specialAbilities)
         if (parsed.hpState) {
             hpState = { ...hpState, ...parsed.hpState };
             partyMembers = parsed.partyMembers || {};
+            specialAbilities = { ...specialAbilities, ...parsed.specialAbilities };
         } else {
             // Legacy format - just hpState
             hpState = { ...hpState, ...parsed };
@@ -640,4 +651,69 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// ==========================================
+// SPECIAL ABILITIES FUNCTIONS
+// ==========================================
+
+// Update Fortune From the Many usage tracking
+function updateFortuneUsage() {
+    let usedCount = 0;
+    
+    // Count checked checkboxes
+    for (let i = 1; i <= specialAbilities.fortuneFromTheMany.maxUses; i++) {
+        const checkbox = document.getElementById(`fortune-use-${i}`);
+        if (checkbox && checkbox.checked) {
+            usedCount++;
+        }
+    }
+    
+    specialAbilities.fortuneFromTheMany.usedCount = usedCount;
+    updateFortuneDisplay();
+    saveState();
+}
+
+// Update Fortune From the Many display
+function updateFortuneDisplay() {
+    const remaining = specialAbilities.fortuneFromTheMany.maxUses - specialAbilities.fortuneFromTheMany.usedCount;
+    const remainingElement = document.getElementById('fortune-remaining');
+    
+    if (remainingElement) {
+        remainingElement.textContent = remaining;
+        remainingElement.style.color = remaining > 0 ? '#2e7d32' : '#d32f2f';
+    }
+    
+    // Update checkboxes to match saved state
+    for (let i = 1; i <= specialAbilities.fortuneFromTheMany.maxUses; i++) {
+        const checkbox = document.getElementById(`fortune-use-${i}`);
+        if (checkbox) {
+            checkbox.checked = i <= specialAbilities.fortuneFromTheMany.usedCount;
+        }
+    }
+}
+
+// Reset Fortune From the Many uses (Long Rest)
+function resetFortuneUses() {
+    if (confirm('Reset Fortune From the Many uses? (Long Rest)')) {
+        specialAbilities.fortuneFromTheMany.usedCount = 0;
+        
+        // Uncheck all checkboxes
+        for (let i = 1; i <= specialAbilities.fortuneFromTheMany.maxUses; i++) {
+            const checkbox = document.getElementById(`fortune-use-${i}`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        }
+        
+        updateFortuneDisplay();
+        saveState();
+        
+        // Visual feedback
+        const abilityCard = document.querySelector('.ability-card');
+        if (abilityCard) {
+            abilityCard.classList.add('heal-animation');
+            setTimeout(() => abilityCard.classList.remove('heal-animation'), 500);
+        }
+    }
 }

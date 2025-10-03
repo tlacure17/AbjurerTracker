@@ -156,6 +156,44 @@
                 </div>
             </div>
 
+            <div class="special-abilities">
+                <h2>🌟 Special Abilities</h2>
+                
+                <div class="ability-card">
+                    <h3>⭐ Fortune From the Many</h3>
+                    <p class="ability-description">
+                        If you miss with an attack roll or fail an ability check or a saving throw, you can draw on your bonds of reciprocity to gain a bonus to the roll equal to the number of allies you can see within 30 feet of you (maximum bonus of +3). You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.
+                    </p>
+                    
+                    <div class="ability-usage">
+                        <div class="usage-header">
+                            <span class="usage-label">Uses Remaining:</span>
+                            <span class="usage-count" id="fortune-remaining">3</span>
+                            <span class="usage-total">/ 3</span>
+                        </div>
+                        
+                        <div class="usage-checkboxes" id="fortune-checkboxes">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fortune-use-1" onchange="updateFortuneUsage()">
+                                <label for="fortune-use-1">Use 1</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fortune-use-2" onchange="updateFortuneUsage()">
+                                <label for="fortune-use-2">Use 2</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fortune-use-3" onchange="updateFortuneUsage()">
+                                <label for="fortune-use-3">Use 3</label>
+                            </div>
+                        </div>
+                        
+                        <div class="ability-controls">
+                            <button class="btn btn-long-rest" onclick="resetFortuneUses()">Long Rest Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="reset-all">
                 <button class="btn btn-reset-all" onclick="resetAll()">Reset All HP</button>
                 <button class="btn btn-reset-all" onclick="resetPartyTracking()">Reset Party Tracking</button>
