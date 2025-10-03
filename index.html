@@ -192,6 +192,95 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="ability-card">
+                    <h3>🧚 Fey Gift</h3>
+                    <p class="ability-description">
+                        You can use this trait to take the Help action as a bonus action, and you can do so a number of times equal to your proficiency bonus. You regain all expended uses when you finish a long rest.
+                        <br><br>
+                        <strong>Starting at 3rd level, choose one of the options below each time you take the Help action with this trait:</strong>
+                        <br>• <strong>Hospitality:</strong> You and the creature you help each gain a number of temporary hit points equal to 1d6 plus your proficiency bonus.
+                        <br>• <strong>Passage:</strong> You and the creature you help each increase your walking speeds by 10 feet until the start of your next turn.
+                        <br>• <strong>Spite:</strong> Until the start of your next turn, the first time the creature you help hits a target with an attack roll, that target has disadvantage on the next attack roll it makes within the next minute.
+                    </p>
+                    
+                    <div class="ability-usage">
+                        <div class="usage-header">
+                            <span class="usage-label">Uses Remaining:</span>
+                            <span class="usage-count" id="fey-gift-remaining">3</span>
+                            <span class="usage-total">/ 3</span>
+                        </div>
+                        
+                        <div class="usage-checkboxes" id="fey-gift-checkboxes">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fey-gift-use-1" onchange="updateFeyGiftUsage()">
+                                <label for="fey-gift-use-1">Use 1</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fey-gift-use-2" onchange="updateFeyGiftUsage()">
+                                <label for="fey-gift-use-2">Use 2</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fey-gift-use-3" onchange="updateFeyGiftUsage()">
+                                <label for="fey-gift-use-3">Use 3</label>
+                            </div>
+                        </div>
+                        
+                        <div class="ability-controls">
+                            <button class="btn btn-long-rest" onclick="resetFeyGiftUses()">Long Rest Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ability-card">
+                    <h3>🏛️ Quick Ritual</h3>
+                    <p class="ability-description">
+                        With this benefit, you can cast a Ritual spell that you have prepared using its regular casting time rather than the extended time for a Ritual. Doing so doesn't require a spell slot. Once you cast the spell in this way, you can't use this benefit again until you finish a Long Rest.
+                    </p>
+                    
+                    <div class="ability-usage">
+                        <div class="usage-header">
+                            <span class="usage-label">Uses Remaining:</span>
+                            <span class="usage-count" id="quick-ritual-remaining">1</span>
+                            <span class="usage-total">/ 1</span>
+                        </div>
+                        
+                        <div class="usage-checkboxes">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="quick-ritual-use-1" onchange="updateQuickRitualUsage()">
+                                <label for="quick-ritual-use-1">Used</label>
+                            </div>
+                        </div>
+                        
+                        <div class="ability-controls">
+                            <button class="btn btn-long-rest" onclick="resetQuickRitualUses()">Long Rest Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ability-card passive-ability">
+                    <h3>🧚‍♀️ Fey Ancestry</h3>
+                    <p class="ability-description">
+                        You have advantage on saving throws you make to avoid or end the charmed condition on yourself.
+                    </p>
+                    <div class="passive-indicator">Passive Ability</div>
+                </div>
+
+                <div class="ability-card passive-ability">
+                    <h3>👁️ Darkvision</h3>
+                    <p class="ability-description">
+                        You can see in dim light within 60 feet of you as if it were bright light and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray.
+                    </p>
+                    <div class="passive-indicator">Passive Ability</div>
+                </div>
+
+                <div class="ability-card passive-ability">
+                    <h3>🧠 Intelligence</h3>
+                    <p class="ability-description">
+                        Your Intelligence increases by 1 and any spells gained by this feat uses Intelligence as its spellcasting ability.
+                    </p>
+                    <div class="passive-indicator">Passive Ability</div>
+                </div>
             </div>
 
             <div class="reset-all">

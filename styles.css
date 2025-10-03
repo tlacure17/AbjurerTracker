@@ -717,6 +717,35 @@ header p {
     box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
 }
 
+/* Passive Abilities */
+.passive-ability {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+    opacity: 0.9;
+}
+
+.passive-ability h3 {
+    color: #6c757d;
+}
+
+.passive-ability .ability-description {
+    background: #ffffff;
+    border-left-color: #6c757d;
+}
+
+.passive-indicator {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem;
+    background: rgba(108, 117, 125, 0.1);
+    border-radius: 6px;
+    margin-top: 0.75rem;
+}
+
 /* Reset All */
 .reset-all {
     text-align: center;

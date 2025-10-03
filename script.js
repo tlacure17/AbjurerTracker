@@ -24,6 +24,14 @@ let specialAbilities = {
     fortuneFromTheMany: {
         maxUses: 3,
         usedCount: 0
+    },
+    feyGift: {
+        maxUses: 3,
+        usedCount: 0
+    },
+    quickRitual: {
+        maxUses: 1,
+        usedCount: 0
     }
 };
 
@@ -33,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
     updateAllDisplays();
     renderPartyMembers();
     updateFortuneDisplay();
+    updateFeyGiftDisplay();
+    updateQuickRitualDisplay();
 });
 
 // Save state to localStorage
@@ -715,5 +725,131 @@ function resetFortuneUses() {
             abilityCard.classList.add('heal-animation');
             setTimeout(() => abilityCard.classList.remove('heal-animation'), 500);
         }
+    }
+}
+
+// Update Fey Gift usage tracking
+function updateFeyGiftUsage() {
+    let usedCount = 0;
+    
+    // Count checked checkboxes
+    for (let i = 1; i <= specialAbilities.feyGift.maxUses; i++) {
+        const checkbox = document.getElementById(`fey-gift-use-${i}`);
+        if (checkbox && checkbox.checked) {
+            usedCount++;
+        }
+    }
+    
+    specialAbilities.feyGift.usedCount = usedCount;
+    updateFeyGiftDisplay();
+    saveState();
+}
+
+// Update Fey Gift display
+function updateFeyGiftDisplay() {
+    const remaining = specialAbilities.feyGift.maxUses - specialAbilities.feyGift.usedCount;
+    const remainingElement = document.getElementById('fey-gift-remaining');
+    
+    if (remainingElement) {
+        remainingElement.textContent = remaining;
+        remainingElement.style.color = remaining > 0 ? '#2e7d32' : '#d32f2f';
+    }
+    
+    // Update checkboxes to match saved state
+    for (let i = 1; i <= specialAbilities.feyGift.maxUses; i++) {
+        const checkbox = document.getElementById(`fey-gift-use-${i}`);
+        if (checkbox) {
+            checkbox.checked = i <= specialAbilities.feyGift.usedCount;
+        }
+    }
+}
+
+// Reset Fey Gift uses (Long Rest)
+function resetFeyGiftUses() {
+    if (confirm('Reset Fey Gift uses? (Long Rest)')) {
+        specialAbilities.feyGift.usedCount = 0;
+        
+        // Uncheck all checkboxes
+        for (let i = 1; i <= specialAbilities.feyGift.maxUses; i++) {
+            const checkbox = document.getElementById(`fey-gift-use-${i}`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        }
+        
+        updateFeyGiftDisplay();
+        saveState();
+        
+        // Visual feedback
+        const abilityCards = document.querySelectorAll('.ability-card');
+        abilityCards.forEach(card => {
+            if (card.textContent.includes('Fey Gift')) {
+                card.classList.add('heal-animation');
+                setTimeout(() => card.classList.remove('heal-animation'), 500);
+            }
+        });
+    }
+}
+
+// Update Quick Ritual usage tracking
+function updateQuickRitualUsage() {
+    let usedCount = 0;
+    
+    // Count checked checkboxes
+    for (let i = 1; i <= specialAbilities.quickRitual.maxUses; i++) {
+        const checkbox = document.getElementById(`quick-ritual-use-${i}`);
+        if (checkbox && checkbox.checked) {
+            usedCount++;
+        }
+    }
+    
+    specialAbilities.quickRitual.usedCount = usedCount;
+    updateQuickRitualDisplay();
+    saveState();
+}
+
+// Update Quick Ritual display
+function updateQuickRitualDisplay() {
+    const remaining = specialAbilities.quickRitual.maxUses - specialAbilities.quickRitual.usedCount;
+    const remainingElement = document.getElementById('quick-ritual-remaining');
+    
+    if (remainingElement) {
+        remainingElement.textContent = remaining;
+        remainingElement.style.color = remaining > 0 ? '#2e7d32' : '#d32f2f';
+    }
+    
+    // Update checkboxes to match saved state
+    for (let i = 1; i <= specialAbilities.quickRitual.maxUses; i++) {
+        const checkbox = document.getElementById(`quick-ritual-use-${i}`);
+        if (checkbox) {
+            checkbox.checked = i <= specialAbilities.quickRitual.usedCount;
+        }
+    }
+}
+
+// Reset Quick Ritual uses (Short Rest)
+function resetQuickRitualUses() {
+    if (confirm('Reset Quick Ritual uses? (Short Rest)')) {
+        specialAbilities.quickRitual.usedCount = 0;
+        
+        // Uncheck all checkboxes
+        for (let i = 1; i <= specialAbilities.quickRitual.maxUses; i++) {
+            const checkbox = document.getElementById(`quick-ritual-use-${i}`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        }
+        
+        updateQuickRitualDisplay();
+        saveState();
+        
+        // Visual feedback
+        const abilityCards = document.querySelectorAll('.ability-card');
+        abilityCards.forEach(card => {
+            if (card.textContent.includes('Quick Ritual')) {
+                card.classList.add('heal-animation');
+                setTimeout(() => card.classList.remove('heal-animation'), 500);
+            }
+        });
     }
 }
