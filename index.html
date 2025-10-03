@@ -258,6 +258,44 @@
                     </div>
                 </div>
 
+                <div class="ability-card">
+                    <h3>⚡ Arcane Rebuttal</h3>
+                    <p class="ability-description">
+                        <strong>Reaction:</strong> When a creature you can see within 30 feet of you targets you with an attack or spell, you can use your reaction to unleash a glyph from the Codex. The attacker must succeed on a Wisdom saving throw (DC = your spell save DC) or take 2d6 force damage and have disadvantage on the triggering attack.
+                    </p>
+                    
+                    <div class="ability-usage">
+                        <div class="usage-header">
+                            <span class="usage-label">Uses Remaining:</span>
+                            <span class="usage-count" id="arcane-rebuttal-remaining">2</span>
+                            <span class="usage-total">/ 2</span>
+                        </div>
+                        
+                        <div class="usage-checkboxes">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="arcane-rebuttal-use-1" onchange="updateArcaneRebuttalUsage()">
+                                <label for="arcane-rebuttal-use-1">Use 1</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="arcane-rebuttal-use-2" onchange="updateArcaneRebuttalUsage()">
+                                <label for="arcane-rebuttal-use-2">Use 2</label>
+                            </div>
+                        </div>
+                        
+                        <div class="ability-controls">
+                            <button class="btn btn-long-rest" onclick="resetArcaneRebuttalUses()">Dawn Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ability-card passive-ability">
+                    <h3>🛡️ Warding Script</h3>
+                    <p class="ability-description">
+                        While holding the codex, you gain a +1 bonus to AC and saving throws against spells.
+                    </p>
+                    <div class="passive-indicator">Passive Ability</div>
+                </div>
+
                 <div class="ability-card passive-ability">
                     <h3>🧚‍♀️ Fey Ancestry</h3>
                     <p class="ability-description">

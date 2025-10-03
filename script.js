@@ -32,6 +32,10 @@ let specialAbilities = {
     quickRitual: {
         maxUses: 1,
         usedCount: 0
+    },
+    arcaneRebuttal: {
+        maxUses: 2,
+        usedCount: 0
     }
 };
 
@@ -43,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFortuneDisplay();
     updateFeyGiftDisplay();
     updateQuickRitualDisplay();
+    updateArcaneRebuttalDisplay();
 });
 
 // Save state to localStorage
@@ -847,6 +852,69 @@ function resetQuickRitualUses() {
         const abilityCards = document.querySelectorAll('.ability-card');
         abilityCards.forEach(card => {
             if (card.textContent.includes('Quick Ritual')) {
+                card.classList.add('heal-animation');
+                setTimeout(() => card.classList.remove('heal-animation'), 500);
+            }
+        });
+    }
+}
+
+// Update Arcane Rebuttal usage tracking
+function updateArcaneRebuttalUsage() {
+    let usedCount = 0;
+    
+    // Count checked checkboxes
+    for (let i = 1; i <= specialAbilities.arcaneRebuttal.maxUses; i++) {
+        const checkbox = document.getElementById(`arcane-rebuttal-use-${i}`);
+        if (checkbox && checkbox.checked) {
+            usedCount++;
+        }
+    }
+    
+    specialAbilities.arcaneRebuttal.usedCount = usedCount;
+    updateArcaneRebuttalDisplay();
+    saveState();
+}
+
+// Update Arcane Rebuttal display
+function updateArcaneRebuttalDisplay() {
+    const remaining = specialAbilities.arcaneRebuttal.maxUses - specialAbilities.arcaneRebuttal.usedCount;
+    const remainingElement = document.getElementById('arcane-rebuttal-remaining');
+    
+    if (remainingElement) {
+        remainingElement.textContent = remaining;
+        remainingElement.style.color = remaining > 0 ? '#2e7d32' : '#d32f2f';
+    }
+    
+    // Update checkboxes to match saved state
+    for (let i = 1; i <= specialAbilities.arcaneRebuttal.maxUses; i++) {
+        const checkbox = document.getElementById(`arcane-rebuttal-use-${i}`);
+        if (checkbox) {
+            checkbox.checked = i <= specialAbilities.arcaneRebuttal.usedCount;
+        }
+    }
+}
+
+// Reset Arcane Rebuttal uses (Dawn)
+function resetArcaneRebuttalUses() {
+    if (confirm('Reset Arcane Rebuttal uses? (Dawn)')) {
+        specialAbilities.arcaneRebuttal.usedCount = 0;
+        
+        // Uncheck all checkboxes
+        for (let i = 1; i <= specialAbilities.arcaneRebuttal.maxUses; i++) {
+            const checkbox = document.getElementById(`arcane-rebuttal-use-${i}`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        }
+        
+        updateArcaneRebuttalDisplay();
+        saveState();
+        
+        // Visual feedback
+        const abilityCards = document.querySelectorAll('.ability-card');
+        abilityCards.forEach(card => {
+            if (card.textContent.includes('Arcane Rebuttal')) {
                 card.classList.add('heal-animation');
                 setTimeout(() => card.classList.remove('heal-animation'), 500);
             }
